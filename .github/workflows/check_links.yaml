@@ -30,9 +30,16 @@ jobs:
           args: '"./website/docs/**/*.md" "./website/docs/**/*.mdx" --scheme http --scheme https --cache --max-cache-age 7d --verbose --accept 200,429'
           output: ${{ env.issue-content }}
 
+      - name: Check whether issues are enabled
+        if: ${{ failure() }}
+        id: repo-issues
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: echo "has_issues=$(gh api repos/${GITHUB_REPOSITORY} --jq '.has_issues')" >> "$GITHUB_OUTPUT"
+
       # Permissions (issues: read)
       - name: 'Look for an existing issue'
-        if: ${{ failure() }}
+        if: ${{ failure() && steps.repo-issues.outputs.has_issues == 'true' }}
         id: last-issue
         uses: micalevisk/last-issue-action@v2
         # Find the last updated open issue with a `automated-issue` label:
@@ -42,7 +49,7 @@ jobs:
 
       # Permissions (issues: write)
       - name: 'Create a new issue, or update an existing one'
-        if: ${{ failure() }}
+        if: ${{ failure() && steps.repo-issues.outputs.has_issues == 'true' }}
         uses: peter-evans/create-issue-from-file@v4
         with:
           title: 'docs: Broken links found'
