@@ -16,7 +16,7 @@ In our current frontend setup we have a lot of code that can be generated out of
 
 SDK generated out of it will be better than what we have right now. It will help reduce the risk of duplication and inconsistencies in our SDK, as it will be generated from a single source of truth.
 
-- We retain the flexibility of previous solution, because we can implement our own _fetcher_ function, and substitute _response_ and _error_ type generics. See https://orval.dev/guides/custom-client
+- We retain the flexibility of previous solution, because we can implement our own _fetcher_ function, and substitute _response_ and _error_ type generics. See the [Orval documentation](https://orval.dev/).
 - It supports `anyOf` and `oneOf` schema, which the previous generator did not support.
 - If we decide to use Orval to generate the HTTP getters and actions for our SDK, it will reduce the amount of boilerplate code required when working with the new APIs.
 
