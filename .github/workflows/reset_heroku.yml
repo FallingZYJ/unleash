@@ -24,5 +24,7 @@ jobs:
           heroku_email: ${{ secrets.HEROKU_EMAIL }}
           justlogin: true
       - name: Reset Postgres
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
           heroku pg:reset DATABASE --app unleash --confirm unleash
